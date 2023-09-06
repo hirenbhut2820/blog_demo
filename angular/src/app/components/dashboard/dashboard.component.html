@@ -1,0 +1,130 @@
+<nav class="navbar bg-body-tertiary">
+    <div class="container-fluid">
+        <div class="w-100">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <a class="navbar-brand">Blog Admin Panel</a>
+                </div>
+                <div class="d-flex">
+                    <button class="btn btn-outline-success" (click)="open(addblog);">Add Blog</button>
+                    <button class="btn btn-outline-dark mx-3" (click)="logoutAdmin();">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="mt-5">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Blog Image</th>
+                        <th scope="col">Blog Name</th>
+                        <th scope="col">Blog Slug</th>
+                        <th scope="col">Blog Description</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of blogData | slice:(page-1) * pageSize:(page-1) * pageSize + pageSize">
+                        <td>{{item.id}}</td>
+                        <td><img src="{{item.blogImage}}" height="100px" width="100px" alt="no-img"/></td>
+                        <td>{{item.blogName}}</td>
+                        <td>{{item.blogSlug}}</td>
+                        <td>{{item.blogDescription}}</td>
+                        <td>
+                            <div class="action-btn d-inline-block">
+                                <span class="text-primary mx-1" (click)="open(editblog,'Edit',item._id);"><i class="fa-solid fa-pencil"></i></span>
+                                <span class="text-danger" (click)="open(deleteblog,'Delete',item._id);"><i class="fa-solid fa-trash"></i></span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <ngb-pagination [collectionSize]="blogData.length" [(page)]="page" aria-label="Default pagination"></ngb-pagination>
+        </div>
+    </div>
+</div>
+<ng-template #addblog let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Add new Blog</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<form>
+			<div class="mb-3">
+				<label for="blogName">Blog Name</label>
+				<div class="input-group">
+					<input type="text" class="form-control" id="blogName" name="blogName" placeholder="Enter Blog Name" [(ngModel)]="blogName" />
+				</div>
+			</div>
+            <div class="mb-3">
+				<label for="blogSlug">Blog Slug</label>
+				<div class="input-group">
+					<input type="text" class="form-control" id="blogSlug" name="blogSlug" placeholder="Enter Blog Slug" [(ngModel)]="blogSlug" (input)="verifyBlogSlug($event);"/>
+				</div>
+            </div>
+            <div class="mb-3">
+				<label for="blogDescription">Blog Description</label>
+				<div class="input-group">
+					<textarea id="blogDescription" class="form-control" name="blogDescription" placeholder="Enter Blog Description" [(ngModel)]="blogDescription" ></textarea>
+				</div>
+            </div>
+            <div class="mb-3">
+				<label for="blogImage">Blog Image</label>
+				<div class="input-group">
+					<input type="file" class="form-control" id="blogImage" name="blogImage" (change)="onFileSelected($event)"/>
+				</div>
+            </div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-dark" (click)="insertBlog();modal.close('Save click');">Save</button>
+	</div>
+</ng-template>
+<ng-template #editblog let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Add new Blog</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<form>
+			<div class="mb-3">
+				<label for="blogName">Blog Name</label>
+				<div class="input-group">
+					<input type="text" class="form-control" id="blogName" name="blogName" placeholder="Enter Blog Name" [(ngModel)]="editBlogDetials.blogName" />
+				</div>
+			</div>
+            <div class="mb-3">
+				<label for="blogSlug">Blog Slug</label>
+				<div class="input-group">
+					<input type="text" class="form-control" id="blogSlug" name="blogSlug" placeholder="Enter Blog Slug" [(ngModel)]="editBlogDetials.blogSlug" />
+				</div>
+            </div>
+            <div class="mb-3">
+				<label for="blogDescription">Blog Description</label>
+				<div class="input-group">
+					<textarea id="blogDescription" class="form-control" name="blogDescription" placeholder="Enter Blog Description" [(ngModel)]="editBlogDetials.blogDescription" ></textarea>
+				</div>
+            </div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-dark" (click)="updateBlog();modal.close('Save click');">Save</button>
+	</div>
+</ng-template>
+<ng-template #deleteblog let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Add new Blog</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="deleteBlogId='';modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<p>Are you sure want to delete this blog?</p>
+	</div>
+	<div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="deleteBlog();modal.close('Save click');">Yes</button>
+		<button type="button" class="btn btn-outline-dark" (click)="deleteBlogId='';modal.close('Save click');">No</button>
+	</div>
+</ng-template>

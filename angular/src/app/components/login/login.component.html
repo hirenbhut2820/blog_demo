@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card border-0 shadow rounded-3 my-5">
+                <div class="card-body p-4 p-sm-5">
+                    <h4 class="text-center">Login</h4>
+                    <form>
+                        <!-- Email input -->
+                        <div class="form-outline mb-4">
+                          <input type="email" id="username" name="username" [(ngModel)]="username" placeholder="name@example.com" class="form-control" />
+                          <label class="form-label" for="username">Email address</label>
+                        </div>
+                      
+                        <!-- Password input -->
+                        <div class="form-outline mb-4">
+                          <input type="password" id="password" name="password" [(ngModel)]="password" placeholder="Password" class="form-control" />
+                          <label class="form-label" for="password">Password</label>
+                        </div>
+                      
+                        <p class="text-danger" *ngIf="loginError">Username or password is wrong.</p>
+                        <!-- Submit button -->
+                        <button type="button" class="btn btn-primary btn-block mb-4 text-center" (click)="loginUser()">Login in</button>
+                      
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
